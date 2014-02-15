@@ -23,7 +23,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="1"/>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="2*"/>
@@ -42,7 +42,6 @@
                             </TextBlock.Background>
                         </TextBlock>
                         <ListBox x:Name="tables_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
-                            <ListBoxItem />
                         </ListBox>
                     </Grid>
                 </Border>

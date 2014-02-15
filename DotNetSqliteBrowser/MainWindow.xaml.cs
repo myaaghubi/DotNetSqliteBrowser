@@ -35,6 +35,27 @@ namespace DotNetSqliteBrowser
             set { sqliteConnection = value; }
         }
 
+        private void loadTables()
+        {
+            try
+            {
+                getSqlite.Open();
+                if (getSqlite.State == ConnectionState.Open)
+                {
+                    string query = "SELECT name from sqlite_master WHERE type='table';";
+                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
+                    SQLiteDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        tables_lb.Items.Add(rd.GetValue(0).ToString());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
 
         private void openDB()
         {
@@ -47,6 +68,7 @@ namespace DotNetSqliteBrowser
         private void openCommand(object sender, RoutedEventArgs e)
         {
             openDB();
+            loadTables();
         }
     }
 }

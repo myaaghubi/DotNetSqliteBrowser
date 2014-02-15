@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SQLite;
+using Microsoft.Win32;
+using System.Data;
 
 namespace DotNetSqliteBrowser
 {
@@ -20,9 +22,31 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SQLiteConnection sqliteConnection;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public SQLiteConnection getSqlite
+        {
+            get { return sqliteConnection; }
+            set { sqliteConnection = value; }
+        }
+
+
+        private void openDB()
+        {
+            OpenFileDialog openDialog = new OpenFileDialog();
+            if (openDialog.ShowDialog().Value)
+                if (openDialog.FileName != null)
+                    getSqlite = new SQLiteConnection("Data Source=" + openDialog.FileName);
+        }
+
+        private void openCommand(object sender, RoutedEventArgs e)
+        {
+            openDB();
         }
     }
 }

@@ -85,7 +85,7 @@
                                 </LinearGradientBrush>
                             </TextBlock.Background>
                         </TextBlock>
-                        <DataGrid x:Name="fulldatagrid_grd" Margin="0,25,0,0">
+                        <DataGrid x:Name="fulldatagrid_grd" Margin="0,25,0,0" CanUserAddRows="False">
                         </DataGrid>
                     </Grid>
                 </Border>

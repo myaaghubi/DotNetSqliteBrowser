@@ -64,6 +64,7 @@ namespace DotNetSqliteBrowser
             ListBoxItem lItem = sender as ListBoxItem;
             if (lItem != null)
             {
+                getTableColumns(lItem.Content.ToString());
                 getTableData(lItem.Content.ToString());
             }
         }
@@ -80,6 +81,29 @@ namespace DotNetSqliteBrowser
                     DataTable dt = new DataTable();
                     adapt.Fill(dt);
                     fulldatagrid_grd.ItemsSource = dt.DefaultView;
+                }
+                getSqlite.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void getTableColumns(string _tableName)
+        {
+            try
+            {
+                getSqlite.Open();
+                if (getSqlite.State == ConnectionState.Open)
+                {
+                    string query = "PRAGMA table_info(" + _tableName + ");";
+                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
+                    SQLiteDataReader rd = command.ExecuteReader();
+                    while (rd.Read())
+                    {
+                        structure_lb.Items.Add(rd.GetValue(1).ToString());
+                    }
                 }
                 getSqlite.Close();
             }

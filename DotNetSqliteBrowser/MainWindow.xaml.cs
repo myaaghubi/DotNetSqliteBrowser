@@ -27,7 +27,6 @@ namespace DotNetSqliteBrowser
         public MainWindow()
         {
             InitializeComponent();
-            EventManager.RegisterClassHandler(typeof(ListBoxItem), ListBoxItem.MouseLeftButtonDownEvent, new RoutedEventHandler(tablesLeftClick));
         }
 
         public SQLiteConnection getSqlite
@@ -43,12 +42,16 @@ namespace DotNetSqliteBrowser
                 getSqlite.Open();
                 if (getSqlite.State == ConnectionState.Open)
                 {
+                    ListBoxItem lbi;
                     string query = "SELECT name from sqlite_master WHERE type='table';";
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
                     while (rd.Read())
                     {
-                        tables_lb.Items.Add(rd.GetValue(0).ToString());
+                        lbi = new ListBoxItem();
+                        lbi.Content = rd.GetValue(0).ToString();
+                        lbi.MouseLeftButtonUp += tablesLeftClick;
+                        tables_lb.Items.Add(lbi);
                     }
                 }
                 getSqlite.Close();
@@ -59,7 +62,8 @@ namespace DotNetSqliteBrowser
             }
         }
 
-        private void tablesLeftClick(object sender, RoutedEventArgs e)
+
+        private void tablesLeftClick(object sender, MouseButtonEventArgs e)
         {
             ListBoxItem lItem = sender as ListBoxItem;
             if (lItem != null)
@@ -98,6 +102,7 @@ namespace DotNetSqliteBrowser
                 if (getSqlite.State == ConnectionState.Open)
                 {
                     string query = "PRAGMA table_info(" + _tableName + ");";
+                    structure_lb.Items.Clear();
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
                     while (rd.Read())

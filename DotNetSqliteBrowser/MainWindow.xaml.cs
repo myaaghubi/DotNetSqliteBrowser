@@ -107,7 +107,7 @@ namespace DotNetSqliteBrowser
                     SQLiteDataReader rd = command.ExecuteReader();
                     while (rd.Read())
                     {
-                        structure_lb.Items.Add(rd.GetValue(1).ToString());
+                        structure_lb.Items.Add(rd.GetValue(1).ToString() + "(" + rd.GetValue(2).ToString() + ")");
                     }
                 }
                 getSqlite.Close();

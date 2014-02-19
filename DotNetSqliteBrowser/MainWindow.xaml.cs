@@ -50,7 +50,7 @@ namespace DotNetSqliteBrowser
                     {
                         lbi = new ListBoxItem();
                         lbi.Content = rd.GetValue(0).ToString();
-                        lbi.MouseLeftButtonUp += tablesLeftClick;
+                        lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
                         tables_lb.Items.Add(lbi);
                     }
                 }
@@ -62,8 +62,7 @@ namespace DotNetSqliteBrowser
             }
         }
 
-
-        private void tablesLeftClick(object sender, MouseButtonEventArgs e)
+        private void tables_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             ListBoxItem lItem = sender as ListBoxItem;
             if (lItem != null)
@@ -93,7 +92,7 @@ namespace DotNetSqliteBrowser
                 MessageBox.Show(ex.ToString());
             }
         }
-
+                    
         private void getTableColumns(string _tableName)
         {
             try
@@ -101,18 +100,46 @@ namespace DotNetSqliteBrowser
                 getSqlite.Open();
                 if (getSqlite.State == ConnectionState.Open)
                 {
+                    ListBoxItem lbi;
                     string query = "PRAGMA table_info(" + _tableName + ");";
                     structure_lb.Items.Clear();
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
                     while (rd.Read())
                     {
-                        structure_lb.Items.Add(rd.GetValue(1).ToString() + "(" + rd.GetValue(2).ToString() + ")");
+                        lbi = new ListBoxItem();
+                        lbi.Name = rd.GetValue(1).ToString();
+                        lbi.Tag = _tableName;
+                        lbi.Content = rd.GetValue(1).ToString() + "(" + rd.GetValue(2).ToString() + ")";
+                        lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
+                        structure_lb.Items.Add(lbi);
                     }
                 }
+                        
                 getSqlite.Close();
             }
             catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        void columns_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                ListBoxItem lbi = sender as ListBoxItem;
+                if (lbi != null)
+                {
+                    getSqlite.Open();
+                    DataTable dt = getSqlite.GetSchema("Columns");
+                    dt.DefaultView.RowFilter = "table_name='" + lbi.Tag  + "' and column_name='" + lbi.Name + "'";
+                    fulldatagrid_grd.ItemsSource = dt.DefaultView;
+
+                    getSqlite.Close();
+                }
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }

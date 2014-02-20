@@ -39,6 +39,7 @@ namespace DotNetSqliteBrowser
         {
             try
             {
+                bool emptyFlag = true;
                 getSqlite.Open();
                 if (getSqlite.State == ConnectionState.Open)
                 {
@@ -51,6 +52,13 @@ namespace DotNetSqliteBrowser
                         lbi = new ListBoxItem();
                         lbi.Content = rd.GetValue(0).ToString();
                         lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
+                        tables_lb.Items.Add(lbi);
+                        emptyFlag = false;
+                    }
+                    if (emptyFlag)
+                    {
+                        lbi = new ListBoxItem();
+                        lbi.Content = "no any table";
                         tables_lb.Items.Add(lbi);
                     }
                 }
@@ -160,7 +168,7 @@ namespace DotNetSqliteBrowser
                 if (saveDialog.FileName != null)
                 {
                     SQLiteConnection.CreateFile(saveDialog.FileName);
-                    getSqlite = new SQLiteConnection("Data Source=" + saveDialog.FileName);
+                    getSqlite = new SQLiteConnection("Data Source=" + saveDialog.FileName + ";Version=3;");
                 }
         }
         private void openCommand(object sender, RoutedEventArgs e)

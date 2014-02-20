@@ -6,7 +6,7 @@
         <DockPanel VerticalAlignment="Top">
             <Menu IsMainMenu="True">
                 <MenuItem Header="_File" Padding="10">
-                    <MenuItem Header="_New..." />
+                    <MenuItem Header="_New..." Click="newCommand" />
                     <Separator />
                     <MenuItem Header="_Open..." Click="openCommand" />
                     <Separator />

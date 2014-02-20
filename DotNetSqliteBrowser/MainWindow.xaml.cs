@@ -153,6 +153,16 @@ namespace DotNetSqliteBrowser
                     getSqlite = new SQLiteConnection("Data Source=" + openDialog.FileName);
         }
 
+        private void newCommand(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveDialog = new SaveFileDialog();
+            if (saveDialog.ShowDialog().Value)
+                if (saveDialog.FileName != null)
+                {
+                    SQLiteConnection.CreateFile(saveDialog.FileName);
+                    getSqlite = new SQLiteConnection("Data Source=" + saveDialog.FileName);
+                }
+        }
         private void openCommand(object sender, RoutedEventArgs e)
         {
             openDB();

@@ -110,7 +110,7 @@ namespace DotNetSqliteBrowser
                 {
                     ListBoxItem lbi;
                     string query = "PRAGMA table_info(" + _tableName + ");";
-                    structure_lb.Items.Clear();
+                    columns_lb.Items.Clear();
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
                     while (rd.Read())
@@ -120,7 +120,7 @@ namespace DotNetSqliteBrowser
                         lbi.Tag = _tableName;
                         lbi.Content = rd.GetValue(1).ToString() + "(" + rd.GetValue(2).ToString() + ")";
                         lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
-                        structure_lb.Items.Add(lbi);
+                        columns_lb.Items.Add(lbi);
                     }
                 }
                         
@@ -175,6 +175,26 @@ namespace DotNetSqliteBrowser
         {
             openDB();
             loadTables();
+        }
+
+        private void queryexecute_btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                getSqlite.Open();
+                if (getSqlite.State == ConnectionState.Open)
+                {
+                    string query = queryfield_txt.Text;
+                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
+                    SQLiteDataReader rd = command.ExecuteReader();
+                }
+
+                getSqlite.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
     }
 }

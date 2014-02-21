@@ -55,7 +55,7 @@
                     <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="3" Height="3" Padding="1, 0" Background="Silver"/>
                     <Border BorderThickness="1" Grid.Row="2" BorderBrush="#FFABADB3">
                         <Grid>
-                            <TextBlock Text="Structure" VerticalAlignment="Top" Margin="0" Padding="0,5" Height="26" TextAlignment="Center" >
+                            <TextBlock Text="Columns" VerticalAlignment="Top" Margin="0" Padding="0,5" Height="26" TextAlignment="Center" >
                                 <TextBlock.Background>
                                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                         <GradientStop Color="#FFE0E0E0" Offset="1"/>
@@ -63,7 +63,7 @@
                                     </LinearGradientBrush>
                                 </TextBlock.Background>
                             </TextBlock>
-                            <ListBox x:Name="structure_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
+                            <ListBox x:Name="columns_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
                             </ListBox>
                         </Grid>
                     </Border>
@@ -88,7 +88,10 @@
                                     </LinearGradientBrush>
                                 </TextBlock.Background>
                             </TextBlock>
-                            <Grid x:Name="queryhome_grd" Margin="0,25,0,0" />
+                            <Grid x:Name="queryhome_grd" Margin="0,25,0,0" Background="#FFF0F0F0" >
+                                <TextBox x:Name="queryfield_txt" TextWrapping="Wrap" Text="query..." Padding="2" Margin="5,5,5,43"/>
+                                <Button x:Name="queryexecute_btn" Content="Execute query" Margin="5,182,573,10" Click="queryexecute_btn_Click"/>
+                            </Grid>
                         </Grid>
                     </Border>
                     <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="3" Height="3" Padding="1,0" Background="Silver"/>

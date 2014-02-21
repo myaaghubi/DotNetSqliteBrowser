@@ -186,7 +186,9 @@ namespace DotNetSqliteBrowser
                 {
                     string query = queryfield_txt.Text;
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-                    SQLiteDataReader rd = command.ExecuteReader();
+                    DataTable dt = new DataTable();
+                    dt.Load(command.ExecuteReader());
+                    fulldatagrid_grd.ItemsSource = dt.DefaultView;
                 }
 
                 getSqlite.Close();
@@ -195,6 +197,15 @@ namespace DotNetSqliteBrowser
             {
                 MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void clearQueryField(object sender, RoutedEventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox.Text == "query...")
+                textBox.Text = string.Empty;
+            else
+                textBox.SelectAll();
         }
     }
 }

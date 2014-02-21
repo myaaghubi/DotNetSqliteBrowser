@@ -89,7 +89,7 @@
                                 </TextBlock.Background>
                             </TextBlock>
                             <Grid x:Name="queryhome_grd" Margin="0,25,0,0" Background="#FFF0F0F0" >
-                                <TextBox x:Name="queryfield_txt" TextWrapping="Wrap" Text="query..." Padding="2" Margin="5,5,5,43"/>
+                                <TextBox x:Name="queryfield_txt" TextWrapping="Wrap" Text="query..." Padding="2" Margin="5,5,5,43" GotFocus="clearQueryField"/>
                                 <Button x:Name="queryexecute_btn" Content="Execute query" Margin="5,182,573,10" Click="queryexecute_btn_Click"/>
                             </Grid>
                         </Grid>

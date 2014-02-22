@@ -192,10 +192,12 @@ namespace DotNetSqliteBrowser
                 }
 
                 getSqlite.Close();
+                queryerrors_txt.Text = "No error";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                getSqlite.Close();
+                queryerrors_txt.Text = ex.Message;
             }
         }
 

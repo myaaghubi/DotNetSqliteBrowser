@@ -113,12 +113,14 @@ namespace DotNetSqliteBrowser
                     columns_lb.Items.Clear();
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
+                    string strPrimaryKey;
                     while (rd.Read())
                     {
                         lbi = new ListBoxItem();
                         lbi.Name = rd.GetValue(1).ToString();
                         lbi.Tag = _tableName;
-                        lbi.Content = rd.GetValue(1).ToString() + "(" + rd.GetValue(2).ToString() + ")";
+                        strPrimaryKey = (rd.GetInt16(5) > 0) ? " PrimaryKey" : "";
+                        lbi.Content = rd.GetValue(1).ToString() + " (" + rd.GetValue(2).ToString() + ")" + strPrimaryKey;
                         lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
                         columns_lb.Items.Add(lbi);
                     }

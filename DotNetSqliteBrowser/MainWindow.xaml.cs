@@ -47,6 +47,7 @@ namespace DotNetSqliteBrowser
                     string query = "SELECT name from sqlite_master WHERE type='table';";
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
+                    tables_lb.Items.Clear();
                     while (rd.Read())
                     {
                         lbi = new ListBoxItem();
@@ -210,6 +211,20 @@ namespace DotNetSqliteBrowser
                 textBox.Text = string.Empty;
             else
                 textBox.SelectAll();
+        }
+
+        private void removeTable_btn_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void addTable_btn_Click(object sender, RoutedEventArgs e)
+        {
+            string query = "";//get table name and columns name
+            getSqlite.Open();
+            SQLiteCommand command = new SQLiteCommand(query, getSqlite);
+            command.ExecuteNonQuery();
+            getSqlite.Close();
+            this.loadTables();
         }
     }
 }

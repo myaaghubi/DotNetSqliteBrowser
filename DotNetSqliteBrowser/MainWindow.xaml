@@ -48,8 +48,18 @@
                     </Grid.RowDefinitions>
                     <Border BorderThickness="1" BorderBrush="#FFABADB3">
                         <Grid>
-                            <Grid Margin="0" Height="26" VerticalAlignment="Top">
-                                <TextBlock Text="Tables" Padding="0,4" TextAlignment="Center" Background="{StaticResource tablesHeaderBackground}" />
+                            <Grid Margin="0" Height="26" VerticalAlignment="Top" Background="{StaticResource tablesHeaderBackground}" >
+                                <Button x:Name="removeTable_btn" Content="" Width="20" Height="20" Margin="0,0,10,0" HorizontalAlignment="Right" BorderThickness="0" Click="removeTable_btn_Click">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="resources/icons/removetable.png" Stretch="Uniform"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button x:Name="addTable_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0" Click="addTable_btn_Click">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="resources/icons/addtable.png" Stretch="Uniform"/>
+                                    </Button.Background>
+                                </Button>
+                                <TextBlock Width="100" Text="Tables" Padding="0,4" TextAlignment="Center" />
                             </Grid>
                             <ListBox x:Name="tables_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
                             </ListBox>
@@ -59,8 +69,18 @@
                     <GridSplitter HorizontalAlignment="Stretch" Grid.Row="1" Grid.ColumnSpan="3" Height="3" Padding="1, 0" Background="Silver"/>
                     <Border BorderThickness="1" Grid.Row="2" BorderBrush="#FFABADB3">
                         <Grid>
-                            <Grid Margin="0" Height="26" VerticalAlignment="Top">
-                                <TextBlock Text="Columns" Padding="0,4" TextAlignment="Center" Background="{StaticResource tablesHeaderBackground}" />
+                            <Grid Margin="0" Height="26" VerticalAlignment="Top" Background="{StaticResource tablesHeaderBackground}">
+                                <Button x:Name="removeColumn_btn" Content="" Width="20" Height="20" Margin="0,0,10,0" HorizontalAlignment="Right" BorderThickness="0">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="resources/icons/removecolumn.png" Stretch="Uniform"/>
+                                    </Button.Background>
+                                </Button>
+                                <Button x:Name="addColumn_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="resources/icons/addcolumn.png" Stretch="Uniform"/>
+                                    </Button.Background>
+                                </Button>
+                                <TextBlock Text="Tables" Padding="0,4" TextAlignment="Center" />
                             </Grid>
                             <ListBox x:Name="columns_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
                             </ListBox>

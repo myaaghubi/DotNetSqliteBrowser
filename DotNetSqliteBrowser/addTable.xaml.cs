@@ -23,7 +23,7 @@ namespace DotNetSqliteBrowser
         public addTable()
         {
             InitializeComponent();
-            dataTypeValues = new List<string>() { "INTEGER", "TEXT", "BLOD", "TEST" };
+            dataTypeValues = new List<string>() { "NUMERIC", "TEXT", "BLOB", "INTEGER PRIMARY KEY" };
             grid_datatype_column_clm.ItemsSource = dataTypeValues;
         }
 
@@ -53,6 +53,11 @@ namespace DotNetSqliteBrowser
                 table.Rows[columns_grd.SelectedIndex].Delete();
                 columns_grd.ItemsSource = table.DefaultView;
             }
+        }
+
+        private void cancel_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

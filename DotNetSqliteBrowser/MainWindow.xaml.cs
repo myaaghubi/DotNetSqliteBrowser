@@ -219,12 +219,8 @@ namespace DotNetSqliteBrowser
 
         private void addTable_btn_Click(object sender, RoutedEventArgs e)
         {
-            string query = "";//get table name and columns name
-            getSqlite.Open();
-            SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-            command.ExecuteNonQuery();
-            getSqlite.Close();
-            this.loadTables();
+            addTable at = new addTable();
+            at.Show();
         }
     }
 }

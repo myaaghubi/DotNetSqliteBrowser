@@ -4,12 +4,18 @@
         Title="Create Table" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid Height="356" Width="300">
         <TextBox x:Name="tablename_txt" Height="26" Margin="10,10,10,0" TextWrapping="Wrap" Text="table1" VerticalAlignment="Top" Padding="3" FontStyle="Italic"/>
-        <ListBox x:Name="columns_lbx" Height="232" Margin="10,41,10,0" VerticalAlignment="Top"/>
-        <Button x:Name="addcolumn_btn" Content="Add" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80"/>
+        <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Columns}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Columns"/>
+                <DataGridComboBoxColumn x:Name="grid_datatype_column_clm" Width="3*" ClipboardContentBinding="{x:Null}" Header="Data Type" SelectedValueBinding="{x:Null}" SelectedItemBinding="{x:Null}" TextBinding="{x:Null}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button x:Name="addcolumn_btn" Content="Add" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" Click="addcolumn_btn_Click"/>
         <Button x:Name="removecolumn_btn" Content="Remove" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80"/>
         <Button x:Name="save_btn" Content="Create &amp; Save" Margin="10,319,125,0" Height="27" VerticalAlignment="Top"/>
         <Button x:Name="cancel_btn" Content="Cancel" Margin="180,319,10,0" Height="27" VerticalAlignment="Top"/>
         <Separator HorizontalAlignment="Left" Height="4" Margin="10,310,0,0" VerticalAlignment="Top" Width="280"/>
+        
 
     </Grid>
 </Window>

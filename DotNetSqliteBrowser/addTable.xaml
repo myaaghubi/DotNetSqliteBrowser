@@ -11,7 +11,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="addcolumn_btn" Content="Add" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" Click="addcolumn_btn_Click"/>
-        <Button x:Name="removecolumn_btn" Content="Remove" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80"/>
+        <Button x:Name="removecolumn_btn" Content="Remove" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80" Click="removecolumn_btn_Click"/>
         <Button x:Name="save_btn" Content="Create &amp; Save" Margin="10,319,125,0" Height="27" VerticalAlignment="Top"/>
         <Button x:Name="cancel_btn" Content="Cancel" Margin="180,319,10,0" Height="27" VerticalAlignment="Top"/>
         <Separator HorizontalAlignment="Left" Height="4" Margin="10,310,0,0" VerticalAlignment="Top" Width="280"/>

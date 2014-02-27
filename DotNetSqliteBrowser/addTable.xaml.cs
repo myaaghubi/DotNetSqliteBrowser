@@ -44,5 +44,15 @@ namespace DotNetSqliteBrowser
             }
             columns_grd.ItemsSource = table.DefaultView;
         }
+
+        private void removecolumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (columns_grd.SelectedIndex != -1)
+            {
+                DataTable table = ((DataView)columns_grd.ItemsSource).ToTable();
+                table.Rows[columns_grd.SelectedIndex].Delete();
+                columns_grd.ItemsSource = table.DefaultView;
+            }
+        }
     }
 }

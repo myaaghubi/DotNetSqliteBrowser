@@ -17,32 +17,34 @@ namespace DotNetSqliteBrowser
     /// <summary>
     /// Interaction logic for addTable.xaml
     /// </summary>
+    
     public partial class addTable : Window
     {
         public List<string> dataTypeValues { get; set; }
         public addTable()
         {
             InitializeComponent();
-            dataTypeValues = new List<string>() { "NUMERIC", "TEXT", "BLOB", "INTEGER PRIMARY KEY" };
-            grid_datatype_column_clm.ItemsSource = dataTypeValues;
         }
-
         private void addcolumn_btn_Click(object sender, RoutedEventArgs e)
         {
-            DataView view = (DataView) columns_grd.ItemsSource;
-            DataTable table;
-            if (view != null)
+            if (newcolumn_txt.Text.Length > 1)
             {
-                table = ((DataView)columns_grd.ItemsSource).ToTable();
-                table.Rows.Add("Column" + table.Rows.Count);
+                DataView view = (DataView)columns_grd.ItemsSource;
+                DataTable table;
+                if (view != null)
+                {
+                    table = ((DataView)columns_grd.ItemsSource).ToTable();
+                    table.Rows.Add(newcolumn_txt.Text, datatype_cbx.Text);
+                }
+                else
+                {
+                    table = new DataTable();
+                    table.Columns.Add("Name");
+                    table.Columns.Add("DataType");
+                    table.Rows.Add(newcolumn_txt.Text, datatype_cbx.Text);
+                }
+                columns_grd.ItemsSource = table.DefaultView;
             }
-            else
-            {
-                table = new DataTable();
-                table.Columns.Add("Columns");
-                table.Rows.Add("Column" + table.Rows.Count);
-            }
-            columns_grd.ItemsSource = table.DefaultView;
         }
 
         private void removecolumn_btn_Click(object sender, RoutedEventArgs e)

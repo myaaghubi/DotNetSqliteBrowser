@@ -219,7 +219,7 @@ namespace DotNetSqliteBrowser
 
         private void addTable_btn_Click(object sender, RoutedEventArgs e)
         {
-            addTable at = new addTable();
+            addTable at = new addTable(getSqlite);
             at.Show();
         }
     }

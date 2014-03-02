@@ -35,7 +35,7 @@ namespace DotNetSqliteBrowser
             set { sqliteConnection = value; }
         }
 
-        private void loadTables()
+        public void loadTables()
         {
             try
             {
@@ -215,6 +215,19 @@ namespace DotNetSqliteBrowser
 
         private void removeTable_btn_Click(object sender, RoutedEventArgs e)
         {
+            if (tables_lb.SelectedIndex > -1)
+            {
+                ListBoxItem lbi = (ListBoxItem)tables_lb.SelectedItem;
+                getSqlite.Open();
+                if (getSqlite.State == ConnectionState.Open)
+                {
+                    string query = "DROP TABLE " + lbi.Content;
+                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
+                    command.ExecuteNonQuery();
+                    getSqlite.Close();
+                    this.loadTables();
+                }
+            }
         }
 
         private void addTable_btn_Click(object sender, RoutedEventArgs e)

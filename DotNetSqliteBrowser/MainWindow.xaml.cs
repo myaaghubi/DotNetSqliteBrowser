@@ -172,6 +172,9 @@ namespace DotNetSqliteBrowser
                 {
                     SQLiteConnection.CreateFile(saveDialog.FileName);
                     getSqlite = new SQLiteConnection("Data Source=" + saveDialog.FileName + ";Version=3;");
+                    addTable at = new addTable(getSqlite);
+                    at.Show();
+                    this.loadTables();
                 }
         }
         private void openCommand(object sender, RoutedEventArgs e)

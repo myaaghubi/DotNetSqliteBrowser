@@ -88,7 +88,7 @@ namespace DotNetSqliteBrowser
                 getSqlite.Open();
                 if (getSqlite.State == ConnectionState.Open)
                 {
-                    string query = "SELECT * from " + _tableName + ";";
+                    string query = "SELECT * from '" + _tableName + "';";
                     SQLiteDataAdapter adapt = new SQLiteDataAdapter(query, getSqlite);
                     DataTable dt = new DataTable();
                     adapt.Fill(dt);
@@ -110,7 +110,7 @@ namespace DotNetSqliteBrowser
                 if (getSqlite.State == ConnectionState.Open)
                 {
                     ListBoxItem lbi;
-                    string query = "PRAGMA table_info(" + _tableName + ");";
+                    string query = "PRAGMA table_info('" + _tableName + "');";
                     columns_lb.Items.Clear();
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     SQLiteDataReader rd = command.ExecuteReader();
@@ -224,12 +224,13 @@ namespace DotNetSqliteBrowser
                 getSqlite.Open();
                 if (getSqlite.State == ConnectionState.Open)
                 {
-                    string query = "DROP TABLE " + lbi.Content;
+                    string query = "DROP TABLE '" + lbi.Content + "'";
                     SQLiteCommand command = new SQLiteCommand(query, getSqlite);
                     command.ExecuteNonQuery();
                     getSqlite.Close();
                     this.loadTables();
                 }
+                getSqlite.Close();
             }
         }
 

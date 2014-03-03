@@ -79,11 +79,11 @@ namespace DotNetSqliteBrowser
             {
                 table = ((DataView)columns_grd.ItemsSource).ToTable();
 
-                string query = "CREATE TABLE IF NOT EXISTS " + tablename_txt.Text + "(";
+                string query = "CREATE TABLE IF NOT EXISTS '" + tablename_txt.Text + "'(";
 
                 foreach (DataRow row in table.Rows)
                 {
-                    query += row[0].ToString() + " " + row[1].ToString() + ",";
+                    query += "" + row[0].ToString() + " " + row[1].ToString() + ",";
                 }
 
                 int position = query.LastIndexOf(',');

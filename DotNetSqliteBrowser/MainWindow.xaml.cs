@@ -239,5 +239,10 @@ namespace DotNetSqliteBrowser
             addTable at = new addTable(getSqlite);
             at.Show();
         }
+		
+		private void regresh_btn_Click(object sender, RoutedEventArgs e)
+        {
+            loadTables();
+        }
     }
 }

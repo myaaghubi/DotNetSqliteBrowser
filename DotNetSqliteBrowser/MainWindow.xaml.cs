@@ -23,6 +23,7 @@ namespace DotNetSqliteBrowser
     public partial class MainWindow : Window
     {
         private SQLiteConnection sqliteConnection;
+		private GetSQLite getSQLite;
 
         public MainWindow()
         {
@@ -40,30 +41,27 @@ namespace DotNetSqliteBrowser
             try
             {
                 bool emptyFlag = true;
-                getSqlite.Open();
-                if (getSqlite.State == ConnectionState.Open)
+                ListBoxItem lbi;
+                string query = "SELECT name from sqlite_master WHERE type='table';";
+
+                SQLiteCommand command = new SQLiteCommand(query, getSQLite.getDB());
+                SQLiteDataReader rd = command.ExecuteReader();
+                tables_lb.Items.Clear();
+                while (rd.Read())
                 {
-                    ListBoxItem lbi;
-                    string query = "SELECT name from sqlite_master WHERE type='table';";
-                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-                    SQLiteDataReader rd = command.ExecuteReader();
-                    tables_lb.Items.Clear();
-                    while (rd.Read())
-                    {
-                        lbi = new ListBoxItem();
-                        lbi.Content = rd.GetValue(0).ToString();
-                        lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
-                        tables_lb.Items.Add(lbi);
-                        emptyFlag = false;
-                    }
-                    if (emptyFlag)
-                    {
-                        lbi = new ListBoxItem();
-                        lbi.Content = "no any table";
-                        tables_lb.Items.Add(lbi);
-                    }
+                    lbi = new ListBoxItem();
+                    lbi.Content = rd.GetValue(0).ToString();
+                    lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
+                    tables_lb.Items.Add(lbi);
+                    emptyFlag = false;
                 }
-                getSqlite.Close();
+                if (emptyFlag)
+                {
+                    lbi = new ListBoxItem();
+                    lbi.Name = "NoTable";
+                    lbi.Content = "no any table";
+                    tables_lb.Items.Add(lbi);
+                }
             }
             catch (Exception ex)
             {
@@ -85,16 +83,8 @@ namespace DotNetSqliteBrowser
         {
             try
             {
-                getSqlite.Open();
-                if (getSqlite.State == ConnectionState.Open)
-                {
-                    string query = "SELECT * from '" + _tableName + "';";
-                    SQLiteDataAdapter adapt = new SQLiteDataAdapter(query, getSqlite);
-                    DataTable dt = new DataTable();
-                    adapt.Fill(dt);
-                    fulldatagrid_grd.ItemsSource = dt.DefaultView;
-                }
-                getSqlite.Close();
+                string query = "SELECT * from '" + _tableName + "';";
+                getSQLite.FillGrid(fulldatagrid_grd, query);
             }
             catch (Exception ex)
             {
@@ -106,28 +96,22 @@ namespace DotNetSqliteBrowser
         {
             try
             {
-                getSqlite.Open();
-                if (getSqlite.State == ConnectionState.Open)
+                ListBoxItem lbi;
+                string query = "PRAGMA table_info('" + _tableName + "');";
+                columns_lb.Items.Clear();
+                SQLiteCommand command = new SQLiteCommand(query, getSQLite.getDB());
+                SQLiteDataReader rd = command.ExecuteReader();
+                string strPrimaryKey;
+                while (rd.Read())
                 {
-                    ListBoxItem lbi;
-                    string query = "PRAGMA table_info('" + _tableName + "');";
-                    columns_lb.Items.Clear();
-                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-                    SQLiteDataReader rd = command.ExecuteReader();
-                    string strPrimaryKey;
-                    while (rd.Read())
-                    {
-                        lbi = new ListBoxItem();
-                        lbi.Name = rd.GetValue(1).ToString();
-                        lbi.Tag = _tableName;
-                        strPrimaryKey = (rd.GetInt16(5) > 0) ? " PrimaryKey" : "";
-                        lbi.Content = rd.GetValue(1).ToString() + " (" + rd.GetValue(2).ToString() + ")" + strPrimaryKey;
-                        lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
-                        columns_lb.Items.Add(lbi);
-                    }
+                    lbi = new ListBoxItem();
+                    lbi.Name = rd.GetValue(1).ToString();
+                    lbi.Tag = _tableName;
+                    strPrimaryKey = (rd.GetInt16(5) > 0) ? " PrimaryKey" : "";
+                    lbi.Content = rd.GetValue(1).ToString() + " (" + rd.GetValue(2).ToString() + ")" + strPrimaryKey;
+                    lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
+                    columns_lb.Items.Add(lbi);
                 }
-                        
-                getSqlite.Close();
             }
             catch (Exception ex)
             {

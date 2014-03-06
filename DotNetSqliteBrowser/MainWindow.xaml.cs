@@ -22,18 +22,10 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private SQLiteConnection sqliteConnection;
-		private GetSQLite getSQLite;
-
+        private GetSQLite getSQLite;
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        public SQLiteConnection getSqlite
-        {
-            get { return sqliteConnection; }
-            set { sqliteConnection = value; }
         }
 
         public void loadTables()
@@ -126,12 +118,9 @@ namespace DotNetSqliteBrowser
                 ListBoxItem lbi = sender as ListBoxItem;
                 if (lbi != null)
                 {
-                    getSqlite.Open();
-                    DataTable dt = getSqlite.GetSchema("Columns");
+                    DataTable dt = getSQLite.getDB().GetSchema("Columns");
                     dt.DefaultView.RowFilter = "table_name='" + lbi.Tag  + "' and column_name='" + lbi.Name + "'";
                     fulldatagrid_grd.ItemsSource = dt.DefaultView;
-
-                    getSqlite.Close();
                 }
             }
             catch(Exception ex)
@@ -145,7 +134,10 @@ namespace DotNetSqliteBrowser
             OpenFileDialog openDialog = new OpenFileDialog();
             if (openDialog.ShowDialog().Value)
                 if (openDialog.FileName != null)
-                    getSqlite = new SQLiteConnection("Data Source=" + openDialog.FileName);
+                {
+                    getSQLite = new GetSQLite(openDialog.FileName);
+                    loadTables();
+                }
         }
 
         private void newCommand(object sender, RoutedEventArgs e)
@@ -155,40 +147,21 @@ namespace DotNetSqliteBrowser
                 if (saveDialog.FileName != null)
                 {
                     SQLiteConnection.CreateFile(saveDialog.FileName);
-                    getSqlite = new SQLiteConnection("Data Source=" + saveDialog.FileName + ";Version=3;");
-                    addTable at = new addTable(getSqlite);
-                    at.Show();
+                    getSQLite = new GetSQLite(saveDialog.FileName);
+                    //addTable at = new addTable(getSqlite);
+                    //at.Show();
                     this.loadTables();
                 }
         }
         private void openCommand(object sender, RoutedEventArgs e)
         {
             openDB();
-            loadTables();
         }
 
         private void queryexecute_btn_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                getSqlite.Open();
-                if (getSqlite.State == ConnectionState.Open)
-                {
-                    string query = queryfield_txt.Text;
-                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-                    DataTable dt = new DataTable();
-                    dt.Load(command.ExecuteReader());
-                    fulldatagrid_grd.ItemsSource = dt.DefaultView;
-                }
-
-                getSqlite.Close();
-                queryerrors_txt.Text = "No error";
-            }
-            catch (Exception ex)
-            {
-                getSqlite.Close();
-                queryerrors_txt.Text = ex.Message;
-            }
+            string query = queryfield_txt.Text;
+            queryerrors_txt.Text = getSQLite.FillGrid(fulldatagrid_grd, queryfield_txt.Text); ;
         }
 
         private void clearQueryField(object sender, RoutedEventArgs e)
@@ -205,26 +178,22 @@ namespace DotNetSqliteBrowser
             if (tables_lb.SelectedIndex > -1)
             {
                 ListBoxItem lbi = (ListBoxItem)tables_lb.SelectedItem;
-                getSqlite.Open();
-                if (getSqlite.State == ConnectionState.Open)
+                if (lbi.Name != "NoTable")
                 {
                     string query = "DROP TABLE '" + lbi.Content + "'";
-                    SQLiteCommand command = new SQLiteCommand(query, getSqlite);
-                    command.ExecuteNonQuery();
-                    getSqlite.Close();
+                    getSQLite.ExecuteNonQuery_(query);
                     this.loadTables();
                 }
-                getSqlite.Close();
             }
         }
 
         private void addTable_btn_Click(object sender, RoutedEventArgs e)
         {
-            addTable at = new addTable(getSqlite);
+            addTable at = new addTable(getSQLite);
             at.Show();
         }
-		
-		private void regresh_btn_Click(object sender, RoutedEventArgs e)
+
+        private void regresh_btn_Click(object sender, RoutedEventArgs e)
         {
             loadTables();
         }

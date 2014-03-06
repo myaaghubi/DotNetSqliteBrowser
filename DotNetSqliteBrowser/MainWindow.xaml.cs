@@ -22,7 +22,7 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GetSQLite getSQLite;
+        private GetSQLite getSQLite = new GetSQLite();
         public MainWindow()
         {
             InitializeComponent();
@@ -57,7 +57,7 @@ namespace DotNetSqliteBrowser
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                
             }
         }
 
@@ -148,9 +148,9 @@ namespace DotNetSqliteBrowser
                 {
                     SQLiteConnection.CreateFile(saveDialog.FileName);
                     getSQLite = new GetSQLite(saveDialog.FileName);
-                    //addTable at = new addTable(getSqlite);
-                    //at.Show();
-                    this.loadTables();
+                    tables_lb.Items.Clear();
+                    addTable at = new addTable(getSQLite);
+                    at.Show();
                 }
         }
         private void openCommand(object sender, RoutedEventArgs e)
@@ -161,7 +161,7 @@ namespace DotNetSqliteBrowser
         private void queryexecute_btn_Click(object sender, RoutedEventArgs e)
         {
             string query = queryfield_txt.Text;
-            queryerrors_txt.Text = getSQLite.FillGrid(fulldatagrid_grd, queryfield_txt.Text); ;
+            queryerrors_txt.Text = getSQLite.FillGrid(fulldatagrid_grd, queryfield_txt.Text);
         }
 
         private void clearQueryField(object sender, RoutedEventArgs e)
@@ -193,7 +193,7 @@ namespace DotNetSqliteBrowser
             at.Show();
         }
 
-        private void regresh_btn_Click(object sender, RoutedEventArgs e)
+        private void refresh_btn_Click(object sender, RoutedEventArgs e)
         {
             loadTables();
         }

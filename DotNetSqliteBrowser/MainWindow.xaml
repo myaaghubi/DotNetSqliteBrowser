@@ -60,7 +60,7 @@
                                     </Button.Background>
                                 </Button>
                                 <TextBlock Width="100" Text="Tables" Padding="0,4" TextAlignment="Center" />
-                                <Button x:Name="regresh_btn" Content="" Width="18" Height="18" Margin="6,0,0,0" HorizontalAlignment="Left" BorderThickness="0" Click="regresh_btn_Click">
+                                <Button x:Name="refresh_btn" Content="" Width="18" Height="18" Margin="6,0,0,0" HorizontalAlignment="Left" BorderThickness="0" Click="refresh_btn_Click">
                                     <Button.Background>
                                         <ImageBrush ImageSource="resources/icons/refresh.png" Stretch="Uniform"/>
                                     </Button.Background>
@@ -85,7 +85,7 @@
                                         <ImageBrush ImageSource="resources/icons/addcolumn.png" Stretch="Uniform"/>
                                     </Button.Background>
                                 </Button>
-                                <TextBlock Text="Tables" Padding="0,4" TextAlignment="Center" />
+                                <TextBlock Text="Columns" Padding="0,4" TextAlignment="Center" />
                             </Grid>
                             <ListBox x:Name="columns_lb" Background="White" BorderThickness="0" Padding="3" Margin="0,25,0,0">
                             </ListBox>

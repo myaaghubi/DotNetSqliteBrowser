@@ -157,6 +157,10 @@ namespace DotNetSqliteBrowser
         {
             openDB();
         }
+        private void exitCommand(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
         private void queryexecute_btn_Click(object sender, RoutedEventArgs e)
         {

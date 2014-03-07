@@ -21,7 +21,7 @@
                     <MenuItem Header="_Save" />
                     <MenuItem Header="_Save As..." />
                     <Separator />
-                    <MenuItem Header="_Exit" />
+                    <MenuItem Header="_Exit" Click="exitCommand" />
                 </MenuItem>
             </Menu>
 
@@ -80,7 +80,7 @@
                                         <ImageBrush ImageSource="resources/icons/removecolumn.png" Stretch="Uniform"/>
                                     </Button.Background>
                                 </Button>
-                                <Button x:Name="addColumn_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0">
+                                <Button x:Name="addColumn_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0" Click="addColumn_btn_Click">
                                     <Button.Background>
                                         <ImageBrush ImageSource="resources/icons/addcolumn.png" Stretch="Uniform"/>
                                     </Button.Background>

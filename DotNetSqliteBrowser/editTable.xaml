@@ -1,0 +1,8 @@
+﻿<Window x:Class="DotNetSqliteBrowser.addTable"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Editing Table" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+    <Grid Height="455" Width="300">
+        
+    </Grid>
+</Window>

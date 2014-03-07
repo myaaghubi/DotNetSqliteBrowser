@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Create Table" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid Height="455" Width="300">
-        <TextBox x:Name="tablename_txt" Height="26" Margin="10,10,10,0" TextWrapping="Wrap" Text="table name" VerticalAlignment="Top" Padding="3" FontStyle="Italic" />
+        <TextBox x:Name="tablename_txt" Height="26" Margin="10,10,10,0" TextWrapping="Wrap" Text="tableName" VerticalAlignment="Top" Padding="3" FontStyle="Italic" />
         <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Name}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Name"/>
@@ -17,7 +17,7 @@
         <Separator HorizontalAlignment="Left" Margin="10,409,0,0" Width="280" Height="4" VerticalAlignment="Top"/>
         <GroupBox Header="New Column" Margin="10,310,10,0" Height="94" VerticalAlignment="Top">
             <Grid>
-                <TextBox x:Name="newcolumn_txt" Margin="10,10,10,39" TextWrapping="Wrap" Text="column name" Padding="1"/>
+                <TextBox x:Name="newcolumn_txt" Margin="10,10,10,39" TextWrapping="Wrap" Text="columnName" Padding="1"/>
                 <ComboBox x:Name="datatype_cbx" Margin="10,42,10,7">
                     <ComboBoxItem Content="TEXT" IsSelected="True"/>
                     <ComboBoxItem Content="NUMERIC"/>

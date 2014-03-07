@@ -17,15 +17,27 @@ namespace DotNetSqliteBrowser
             sqliteConnection = new SQLiteConnection("Data Source=" + _connection);
         }
 
+        public GetSQLite()
+        {
+            sqliteConnection = null;
+        }
+
         public SQLiteConnection getDB()
         {
-            Open();
-            return sqliteConnection;
+            if (Open())
+                return sqliteConnection;
+            return null;
         }
-        private void Open()
+        private bool Open()
         {
-            if (sqliteConnection != null && sqliteConnection.State != System.Data.ConnectionState.Open)
-                sqliteConnection.Open();
+            if (sqliteConnection != null)
+            {
+                if (sqliteConnection.State != System.Data.ConnectionState.Open)
+                    sqliteConnection.Open();
+                    
+                return true;
+            }
+            return false;
         }
 
         private void Close()
@@ -38,7 +50,7 @@ namespace DotNetSqliteBrowser
         {
             if (query != string.Empty)
             {
-                Open();
+                if (Open())
                 using (SQLiteCommand command = new SQLiteCommand(query, sqliteConnection))
                 {
                     command.ExecuteNonQuery();
@@ -52,14 +64,15 @@ namespace DotNetSqliteBrowser
             {
                 try
                 {
-                    Open();
-                    using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(query_, sqliteConnection))
-                    {
-                        DataTable resutlDT = new DataTable();
-                        dataAdapter.Fill(resutlDT);
-                        grid_.ItemsSource = resutlDT.DefaultView;
-                    }
-                    return "No error";
+                    if (Open())
+                        using (SQLiteDataAdapter dataAdapter = new SQLiteDataAdapter(query_, sqliteConnection))
+                        {
+                            DataTable resutlDT = new DataTable();
+                            dataAdapter.Fill(resutlDT);
+                            grid_.ItemsSource = resutlDT.DefaultView;
+                            return "No error";
+                        }
+                    return "Problem in opening database.";
                 }
                 catch (SQLiteException ex)
                 {

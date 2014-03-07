@@ -21,12 +21,12 @@ namespace DotNetSqliteBrowser
     
     public partial class addTable : Window
     {
-        private SQLiteConnection getSqlite;
+        private GetSQLite getSqlite;
 
-        public addTable(SQLiteConnection getSqlite)
+        public addTable(GetSQLite getSqlite_)
         {
             InitializeComponent();
-            this.getSqlite = getSqlite;
+            this.getSqlite = getSqlite_;
         }
 
         private void addcolumn_btn_Click(object sender, RoutedEventArgs e)
@@ -97,12 +97,11 @@ namespace DotNetSqliteBrowser
         }
         public void setQuery(string query_)
         {
-            getSqlite.Open();
-            if (query_ != null && getSqlite.State == ConnectionState.Open)
+            if (query_ != null)
             {
-                SQLiteCommand command = new SQLiteCommand(query_, getSqlite);
-                command.ExecuteNonQuery();
-                getSqlite.Close();
+                getSqlite.ExecuteNonQuery_(query_);
+                var mainwindow = Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window is MainWindow) as MainWindow;
+                mainwindow.loadTables();
                 this.Close();
             }
         }

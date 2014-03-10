@@ -18,9 +18,22 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class addColumn : Window
     {
-        public addColumn()
+        private GetSQLite getSQLite;
+
+        public addColumn(GetSQLite getSQLite_)
         {
             InitializeComponent();
+            this.getSQLite = getSQLite_;
+        }
+
+        private void addcolumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (getSQLite.getCurrentTableName != string.Empty && newcolumn_txt.Text != string.Empty)
+            {
+                getSQLite.ExecuteNonQuery_("ALTER TABLE " + getSQLite.getCurrentTableName + " ADD COLUMN " 
+                    + newcolumn_txt.Text + " " + datatype_cbx.Text);
+                this.Close();
+            }
         }
     }
 }

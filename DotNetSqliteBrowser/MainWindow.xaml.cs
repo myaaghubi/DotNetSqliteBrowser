@@ -22,32 +22,32 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class MainWindow : Window
     {
-        private GetSQLite getSQLite = new GetSQLite();
+        private GetSQLite getSQLite;
         public MainWindow()
         {
             InitializeComponent();
+            getSQLite = new GetSQLite();
         }
 
         public void loadTables()
         {
             try
             {
-                bool emptyFlag = true;
-                ListBoxItem lbi;
-                string query = "SELECT name from sqlite_master WHERE type='table';";
+                string query = "SELECT name, sql from sqlite_master WHERE type='table';";
 
-                SQLiteCommand command = new SQLiteCommand(query, getSQLite.getDB());
-                SQLiteDataReader rd = command.ExecuteReader();
+                DataTable tables = getSQLite.getValueByQuery(query);
                 tables_lb.Items.Clear();
-                while (rd.Read())
+                
+                ListBoxItem lbi;
+                foreach(DataRow tablesRow in tables.Rows)
                 {
                     lbi = new ListBoxItem();
-                    lbi.Content = rd.GetValue(0).ToString();
+                    lbi.Name = tablesRow[0].ToString();
+                    lbi.Content = tablesRow[0].ToString();
                     lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
                     tables_lb.Items.Add(lbi);
-                    emptyFlag = false;
                 }
-                if (emptyFlag)
+                if (tables.Rows.Count == 0)
                 {
                     lbi = new ListBoxItem();
                     lbi.Name = "NoTable";
@@ -63,11 +63,11 @@ namespace DotNetSqliteBrowser
 
         private void tables_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem lItem = sender as ListBoxItem;
-            if (lItem != null)
+            string tableName = (sender as ListBoxItem).Content.ToString();
+            if (sender != null)
             {
-                getTableColumns(lItem.Content.ToString());
-                getTableData(lItem.Content.ToString());
+                getTableColumns(tableName);
+                getTableData(tableName);
             }
         }
 
@@ -75,7 +75,7 @@ namespace DotNetSqliteBrowser
         {
             try
             {
-                string query = "SELECT * from '" + _tableName + "';";
+                string query = "SELECT rowid, * From '" + _tableName + "' Order By rowid;";
                 getSQLite.FillGrid(fulldatagrid_grd, query);
             }
             catch (Exception ex)
@@ -91,16 +91,16 @@ namespace DotNetSqliteBrowser
                 ListBoxItem lbi;
                 string query = "PRAGMA table_info('" + _tableName + "');";
                 columns_lb.Items.Clear();
-                SQLiteCommand command = new SQLiteCommand(query, getSQLite.getDB());
-                SQLiteDataReader rd = command.ExecuteReader();
+                DataTable tableInfo = getSQLite.getValueByQuery(query);
+
                 string strPrimaryKey;
-                while (rd.Read())
+                foreach (DataRow tablesRow in tableInfo.Rows)
                 {
                     lbi = new ListBoxItem();
-                    lbi.Name = rd.GetValue(1).ToString();
+                    lbi.Name = tablesRow[1].ToString();
                     lbi.Tag = _tableName;
-                    strPrimaryKey = (rd.GetInt16(5) > 0) ? " PrimaryKey" : "";
-                    lbi.Content = rd.GetValue(1).ToString() + " (" + rd.GetValue(2).ToString() + ")" + strPrimaryKey;
+                    strPrimaryKey = (int.Parse(tablesRow[5].ToString()) > 0) ? " PrimaryKey" : "";
+                    lbi.Content = tablesRow[1].ToString() + " (" + tablesRow[2].ToString() + ")" + strPrimaryKey;
                     lbi.MouseLeftButtonUp += columns_MouseLeftButtonUp;
                     columns_lb.Items.Add(lbi);
                 }
@@ -193,13 +193,23 @@ namespace DotNetSqliteBrowser
 
         private void addTable_btn_Click(object sender, RoutedEventArgs e)
         {
-            addTable at = new addTable(getSQLite);
-            at.Show();
+            addTable addTable_ = new addTable(getSQLite);
+            addTable_.Show();
         }
 
         private void refresh_btn_Click(object sender, RoutedEventArgs e)
         {
             loadTables();
+        }
+
+        private void editTable_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (tables_lb.SelectedIndex > -1)
+            {
+                string tableName_ = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                editTable editTable_ = new editTable(getSQLite, tableName_);
+                editTable_.Show();
+            }
         }
     }
 }

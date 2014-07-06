@@ -46,6 +46,21 @@ namespace DotNetSqliteBrowser
                 sqliteConnection.Close();
         }
 
+        public DataTable getValueByQuery(string query)
+        {
+            if (query != string.Empty)
+            {
+                if (Open())
+                    using (SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, sqliteConnection))
+                    {
+                        DataTable result = new DataTable();
+                        adapter.Fill(result);
+                        return result;
+                    }
+            }
+            return null;
+        }
+
         public void ExecuteNonQuery_(string query)
         {
             if (query != string.Empty)

@@ -4,21 +4,19 @@
         Title="Editing Table" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid Height="455" Width="300">
         <TextBox x:Name="tablename_txt" Height="26" Margin="10,10,10,0" TextWrapping="Wrap" Text="tableName" VerticalAlignment="Top" Padding="3" FontStyle="Italic" />
-        <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False">
+        <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="getCell">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Name"/>
-                <DataGridTextColumn Binding="{Binding Path=DataType}" Width="3*" ClipboardContentBinding="{x:Null}" Header="Data Type"/>
+                <DataGridTextColumn Binding="{Binding Path=name}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Name"/>
+                <DataGridTextColumn Binding="{Binding Path=type}" Width="3*" ClipboardContentBinding="{x:Null}" Header="Data Type"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="editcolumn_btn" Content="Edit" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" />
-        <Button x:Name="removecolumn_btn" Content="Remove" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80" />
-        <Button x:Name="update_btn" Content="Save" Margin="10,418,125,0" Height="27" VerticalAlignment="Top" />
-        <Button x:Name="cancel_btn" Content="Cancel" Margin="180,418,10,0" Height="27" VerticalAlignment="Top" />
+        <Button x:Name="editcolumn_btn" Content="Add Col" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" />
+        <Button x:Name="removecolumn_btn" Content="Remove Col" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80" />
         <Separator HorizontalAlignment="Left" Margin="10,409,0,0" Width="280" Height="4" VerticalAlignment="Top"/>
         <GroupBox Header="Column details" Margin="10,310,10,0" Height="94" VerticalAlignment="Top">
             <Grid>
-                <TextBox x:Name="columnname_txt" Margin="10,10,10,39" TextWrapping="Wrap" Text="" Padding="1"/>
-                <ComboBox x:Name="datatype_cbx" Margin="10,42,10,7">
+                <TextBox x:Name="editablecolumnname_txt" Margin="10,10,10,39" TextWrapping="Wrap" Text="" Padding="1"/>
+                <ComboBox x:Name="editabledatatype_cbx" Margin="10,42,10,7">
                     <ComboBoxItem Content="TEXT" IsSelected="True"/>
                     <ComboBoxItem Content="NUMERIC"/>
                     <ComboBoxItem Content="BLOB"/>
@@ -26,5 +24,8 @@
                 </ComboBox>
             </Grid>
         </GroupBox>
+        <Button x:Name="applychange_btn" Content="Apply Change" Margin="190,278,10,0" VerticalAlignment="Top" Height="27" Width="100" Click="applychange_btn_Click" />
+        <Button x:Name="update_btn" Content="Save" Margin="10,418,125,0" Height="27" VerticalAlignment="Top" />
+        <Button x:Name="cancel_btn" Content="Cancel" Margin="180,418,10,0" Height="27" VerticalAlignment="Top" />
     </Grid>
 </Window>

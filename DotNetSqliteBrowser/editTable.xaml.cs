@@ -64,10 +64,53 @@ namespace DotNetSqliteBrowser
 
         private void applychange_btn_Click(object sender, RoutedEventArgs e)
         {
+            int changes = 0; // 0 for no change, 1 for change column name, 2 for change column type, 3 for change name/type and 4 for add new column
             DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
-            (tableOfColumns.Rows[currentIndex])["name"] = editablecolumnname_txt.Text;
-            (tableOfColumns.Rows[currentIndex])["type"] = editabledatatype_cbx.SelectionBoxItem.ToString();
+            if (!tableOfColumns.Columns.Contains("changes"))
+                tableOfColumns.Columns.Add("changes");
 
+            if ((tableOfColumns.Rows[currentIndex])["name"].ToString() != editablecolumnname_txt.Text.Trim())
+            {
+                (tableOfColumns.Rows[currentIndex])["name"] = editablecolumnname_txt.Text.Trim();
+                changes += 1;
+            }
+            if ((tableOfColumns.Rows[currentIndex])["type"].ToString() != editabledatatype_cbx.SelectionBoxItem.ToString())
+            {
+                (tableOfColumns.Rows[currentIndex])["type"] = editabledatatype_cbx.SelectionBoxItem.ToString();
+                changes += 2;
+
+            }
+            if ((tableOfColumns.Rows[currentIndex])["changes"].ToString() != "4")
+                (tableOfColumns.Rows[currentIndex])["changes"] = changes;
+            
+            columns_grd.ItemsSource = tableOfColumns.DefaultView;
+        }
+
+        private void removecolumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (columns_grd.SelectedIndex != -1)
+            {
+                DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
+                if (!tableOfColumns.Columns.Contains("changes"))
+                    tableOfColumns.Columns.Add("changes");
+
+                tableOfColumns.Rows[columns_grd.SelectedIndex].Delete();
+                columns_grd.ItemsSource = tableOfColumns.DefaultView;
+            }
+        }
+
+        private void addcolumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+            DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
+            if (!tableOfColumns.Columns.Contains("changes"))
+                tableOfColumns.Columns.Add("changes");
+
+            DataRow newColumn = tableOfColumns.NewRow();
+            newColumn["name"] = editablecolumnname_txt.Text.Trim();
+            newColumn["type"] = editabledatatype_cbx.SelectionBoxItem.ToString();
+            newColumn["changes"] = "4";
+
+            tableOfColumns.Rows.Add(newColumn);
             columns_grd.ItemsSource = tableOfColumns.DefaultView;
         }
     }

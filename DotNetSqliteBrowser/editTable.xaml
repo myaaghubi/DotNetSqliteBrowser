@@ -4,14 +4,15 @@
         Title="Editing Table" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid Height="455" Width="300">
         <TextBox x:Name="tablename_txt" Height="26" Margin="10,10,10,0" TextWrapping="Wrap" Text="tableName" VerticalAlignment="Top" Padding="3" FontStyle="Italic" />
-        <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="getCell">
+        <DataGrid x:Name="columns_grd" Height="232" Margin="10,41,10,0" VerticalAlignment="Top" SelectionMode="Single" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" SelectionChanged="getCell" CanUserSortColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=name}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Name"/>
                 <DataGridTextColumn Binding="{Binding Path=type}" Width="3*" ClipboardContentBinding="{x:Null}" Header="Data Type"/>
+                <DataGridTextColumn Binding="{Binding Path=changes}" Width="3*" ClipboardContentBinding="{x:Null}" Header="State" Visibility="Visible"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="editcolumn_btn" Content="Add Col" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" />
-        <Button x:Name="removecolumn_btn" Content="Remove Col" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80" />
+        <Button x:Name="addcolumn_btn" Content="Add Col" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" Click="addcolumn_btn_Click" />
+        <Button x:Name="removecolumn_btn" Content="Remove Col" Margin="95,278,125,0" VerticalAlignment="Top" Height="27" Width="80" Click="removecolumn_btn_Click" />
         <Separator HorizontalAlignment="Left" Margin="10,409,0,0" Width="280" Height="4" VerticalAlignment="Top"/>
         <GroupBox Header="Column details" Margin="10,310,10,0" Height="94" VerticalAlignment="Top">
             <Grid>

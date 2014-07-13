@@ -1,4 +1,4 @@
-DotNetSqliteBrowser # ver 0.57
+DotNetSqliteBrowser # ver 0.58
 ===================
 
 Simple sqlite browser on .net 4.5.1<br>

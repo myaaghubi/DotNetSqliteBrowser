@@ -8,9 +8,9 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=name}" Width="2*" ClipboardContentBinding="{x:Null}" Header="Name"/>
                 <DataGridTextColumn Binding="{Binding Path=type}" Width="3*" ClipboardContentBinding="{x:Null}" Header="Data Type"/>
-                <DataGridTextColumn Binding="{Binding Path=changes}" Width="3*" ClipboardContentBinding="{x:Null}" Header="State" Visibility="Hidden"/>
-                <DataGridTextColumn Binding="{Binding Path=oldname}" Width="3*" ClipboardContentBinding="{x:Null}" Header="OldName" Visibility="Hidden"/>
-                <DataGridTextColumn Binding="{Binding Path=oldtype}" Width="3*" ClipboardContentBinding="{x:Null}" Header="OldType" Visibility="Hidden"/>
+                <DataGridTextColumn Binding="{Binding Path=changes}" Width="3*" ClipboardContentBinding="{x:Null}" Header="State" Visibility="Visible"/>
+                <DataGridTextColumn Binding="{Binding Path=oldname}" Width="3*" ClipboardContentBinding="{x:Null}" Header="OldName" Visibility="Visible"/>
+                <DataGridTextColumn Binding="{Binding Path=oldtype}" Width="3*" ClipboardContentBinding="{x:Null}" Header="OldType" Visibility="Visible"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="addcolumn_btn" Content="Add Col" Margin="10,278,210,0" VerticalAlignment="Top" Height="27" Width="80" Click="addcolumn_btn_Click" />

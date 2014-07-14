@@ -72,23 +72,22 @@ namespace DotNetSqliteBrowser
                 DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
                 checkTableColumns(tableOfColumns);
 
-                if ((tableOfColumns.Rows[currentIndex])["name"].ToString() != editablecolumnname_txt.Text.Trim())
+                if ((tableOfColumns.Rows[currentIndex])["name"].ToString() != editablecolumnname_txt.Text.Trim() ||
+                    (tableOfColumns.Rows[currentIndex])["type"].ToString() != editabledatatype_cbx.SelectionBoxItem.ToString())
                 {
+                    if ((tableOfColumns.Rows[currentIndex])["oldname"].ToString().Length == 0)
+                    {
+                        (tableOfColumns.Rows[currentIndex])["oldname"] = (tableOfColumns.Rows[currentIndex])["name"].ToString();
+                        (tableOfColumns.Rows[currentIndex])["oldtype"] = (tableOfColumns.Rows[currentIndex])["type"].ToString();
+                    }
                     (tableOfColumns.Rows[currentIndex])["name"] = editablecolumnname_txt.Text.Trim();
-                    changes = 1;
-                }
-                if ((tableOfColumns.Rows[currentIndex])["type"].ToString() != editabledatatype_cbx.SelectionBoxItem.ToString())
-                {
                     (tableOfColumns.Rows[currentIndex])["type"] = editabledatatype_cbx.SelectionBoxItem.ToString();
+                    
                     changes = 1;
+
+                    if ((tableOfColumns.Rows[currentIndex])["changes"].ToString() != "2")
+                        (tableOfColumns.Rows[currentIndex])["changes"] = changes;
                 }
-                if (changes == 1 && (tableOfColumns.Rows[currentIndex])["oldname"].ToString().Length == 0)
-                {
-                    (tableOfColumns.Rows[currentIndex])["oldname"] = (tableOfColumns.Rows[currentIndex])["name"].ToString();
-                    (tableOfColumns.Rows[currentIndex])["oldtype"] = (tableOfColumns.Rows[currentIndex])["type"].ToString();
-                }
-                if ((tableOfColumns.Rows[currentIndex])["changes"].ToString() != "2")
-                    (tableOfColumns.Rows[currentIndex])["changes"] = changes;
 
                 columns_grd.ItemsSource = tableOfColumns.DefaultView;
             }
@@ -133,42 +132,64 @@ namespace DotNetSqliteBrowser
         {
             try
             {
+                bool insertFlag = false;
+                string newTableName = tablename_txt.Text.Trim();
                 DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
                 checkTableColumns(tableOfColumns);
 
                 string query = "ALTER TABLE " + tableName + " RENAME TO temp_" + tableName + ";";
                 getSqlite.ExecuteNonQuery_(query);
 
-                query = "CREATE TABLE " + tablename_txt.Text.Trim() + "(";
+                query = "CREATE TABLE " + newTableName + "(";
                 foreach (DataRow anyColumn in tableOfColumns.Rows)
                 {
-                    query += anyColumn["name"].ToString() + " " + anyColumn["type"].ToString() + ", ";
+                    if (anyColumn.RowState != DataRowState.Deleted)
+                        query += anyColumn["name"].ToString() + " " + anyColumn["type"].ToString() + ", ";
                 }
                 query += ");";
                 query = query.Remove(query.LastIndexOf(", "), 2);
 
                 getSqlite.ExecuteNonQuery_(query);
 
-                query = "INSERT INTO " + tablename_txt.Text.Trim() + "(";
-                foreach (DataRow anyColumn in tableOfColumns.Rows)
+
+                if (true)
                 {
-                    if (anyColumn["changes"].ToString() == "1")
-                        query += anyColumn["name"].ToString() + ", ";
+                    query = "INSERT INTO " + newTableName + "(";
+                    foreach (DataRow anyColumn in tableOfColumns.Rows)
+                    {
+                        if (anyColumn.RowState != DataRowState.Deleted)
+                            query += anyColumn["name"].ToString() + ", ";
+                    }
+
+                    query = query.Remove(query.LastIndexOf(", "), 2);
+                    query += ") SELECT ";
+
+                    foreach (DataRow anyColumn in tableOfColumns.Rows)
+                    {
+                        if (anyColumn.RowState != DataRowState.Deleted)
+                            if (anyColumn["changes"].ToString() == "1")
+                                query += anyColumn["oldname"].ToString() + ", ";
+                            else
+                                query += anyColumn["name"].ToString() + ", ";
+                    }
+                    query = query.Remove(query.LastIndexOf(", "), 2);
+                    query += " FROM temp_" + tableName + " ;";
+
+                    getSqlite.ExecuteNonQuery_(query);
                 }
-                query = query.Remove(query.LastIndexOf(", "), 2);
-                query += ") SELECT ";
-                foreach (DataRow anyColumn in tableOfColumns.Rows)
-                {
-                    if (anyColumn["changes"].ToString() == "1")
-                        query += anyColumn["oldname"].ToString() + ", ";
-                }
-                query = query.Remove(query.LastIndexOf(", "), 2);
-                query += "FROM temp_" + tableName + " ;";
             }
             catch(Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
+            finally
+            {
+                string query = "DROP TABLE temp_" + tableName + ";";
+                getSqlite.ExecuteNonQuery_(query);
+            }
+
+            var mainwindow = Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window is MainWindow) as MainWindow;
+            mainwindow.loadTables();
             this.Close();
         }
 

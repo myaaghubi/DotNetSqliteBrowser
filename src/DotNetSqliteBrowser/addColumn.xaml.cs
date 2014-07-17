@@ -38,19 +38,20 @@ namespace DotNetSqliteBrowser
     {
         private GetSQLite getSQLite;
 
-        public addColumn(GetSQLite getSQLite_)
+        private string tableName;
+        public addColumn(GetSQLite getSqlite_, string tableName_)
         {
             InitializeComponent();
-            this.getSQLite = getSQLite_;
+            this.getSQLite = getSqlite_;
+            this.tableName = tableName_;
         }
 
         private void addcolumn_btn_Click(object sender, RoutedEventArgs e)
         {
-            if (getSQLite.getCurrentTableName != string.Empty && newcolumn_txt.Text != string.Empty)
+            if (tableName != string.Empty && newcolumn_txt.Text != string.Empty)
             {
-                getSQLite.ExecuteNonQuery_("ALTER TABLE " + getSQLite.getCurrentTableName + " ADD COLUMN " 
-                    + newcolumn_txt.Text + " " + datatype_cbx.Text);
-                this.Close();
+                getSQLite.ExecuteNonQuery_("ALTER TABLE " + tableName + " ADD COLUMN "
+                    + newcolumn_txt.Text.Trim() + " " + datatype_cbx.SelectionBoxItem.ToString());
             }
         }
     }

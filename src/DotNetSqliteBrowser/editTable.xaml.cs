@@ -150,7 +150,6 @@ namespace DotNetSqliteBrowser
         {
             try
             {
-                bool insertFlag = false;
                 string newTableName = tablename_txt.Text.Trim();
                 DataTable tableOfColumns = (columns_grd.ItemsSource as DataView).Table;
                 checkTableColumns(tableOfColumns);

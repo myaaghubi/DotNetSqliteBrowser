@@ -200,7 +200,7 @@ namespace DotNetSqliteBrowser
             if (tables_lb.SelectedIndex > -1)
             {
                 ListBoxItem lbi = (ListBoxItem)tables_lb.SelectedItem;
-                if (lbi.Name != "NoTable")
+                if (lbi.Name != "NoTable" && MessageBox.Show("Are your sure you want to delete this table?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     string query = "DROP TABLE '" + lbi.Content + "'";
                     getSQLite.ExecuteNonQuery_(query);
@@ -228,6 +228,25 @@ namespace DotNetSqliteBrowser
                 editTable editTable_ = new editTable(getSQLite, tableName_);
                 editTable_.Show();
             }
+        }
+
+        private void addColumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+            if (tables_lb.SelectedIndex > -1)
+            {
+                string tableName_ = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                addColumn addc = new addColumn(getSQLite, tableName_);
+                addc.Show();
+            }
+        }
+
+        private void removeColumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+           /* if (columns_lb.SelectedIndex != -1 && MessageBox.Show("Are your sure you want to delete this column?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                
+            }
+            * */
         }
     }
 }

@@ -52,6 +52,10 @@ namespace DotNetSqliteBrowser
             {
                 getSQLite.ExecuteNonQuery_("ALTER TABLE " + tableName + " ADD COLUMN "
                     + newcolumn_txt.Text.Trim() + " " + datatype_cbx.SelectionBoxItem.ToString());
+
+                var mainwindow = Application.Current.Windows.Cast<Window>().FirstOrDefault(window => window is MainWindow) as MainWindow;
+                mainwindow.getTableColumns(tableName);
+                this.Close();
             }
         }
     }

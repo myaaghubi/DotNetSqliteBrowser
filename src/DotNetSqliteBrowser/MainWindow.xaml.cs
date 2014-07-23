@@ -102,7 +102,7 @@ namespace DotNetSqliteBrowser
             }
         }
                     
-        private void getTableColumns(string _tableName)
+        public void getTableColumns(string _tableName)
         {
             try
             {
@@ -242,11 +242,52 @@ namespace DotNetSqliteBrowser
 
         private void removeColumn_btn_Click(object sender, RoutedEventArgs e)
         {
-           /* if (columns_lb.SelectedIndex != -1 && MessageBox.Show("Are your sure you want to delete this column?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (columns_lb.SelectedIndex != -1 && tables_lb.SelectedIndex != -1 && MessageBox.Show("Are your sure you want to delete this column?", "", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                
+                string tableName_ = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                string columnName_ = ((ListBoxItem)columns_lb.SelectedItem).Name;
+                string query = "PRAGMA table_info('" + tableName_ + "');";
+
+                DataTable tableInfo = getSQLite.getValueByQuery(query);
+                query = "ALTER TABLE " + tableName_ + " RENAME TO temp_" + tableName_ + ";";
+                getSQLite.ExecuteNonQuery_(query);
+
+                query = "CREATE TABLE " + tableName_ + "(";
+                foreach (DataRow anyColumn in tableInfo.Rows)
+                {
+                    if (anyColumn["name"].ToString() != columnName_)
+                        query += anyColumn["name"].ToString() + " " + anyColumn["type"].ToString() + ", ";
+                }
+                query += ");";
+                query = query.Remove(query.LastIndexOf(", "), 2);
+
+                getSQLite.ExecuteNonQuery_(query);
+
+                query = "INSERT INTO " + tableName_ + "(";
+                foreach (DataRow anyColumn in tableInfo.Rows)
+                {
+                    if (anyColumn["name"].ToString() != columnName_)
+                        query += anyColumn["name"].ToString() + ", ";
+                }
+
+                query = query.Remove(query.LastIndexOf(", "), 2);
+                query += ") SELECT ";
+
+                foreach (DataRow anyColumn in tableInfo.Rows)
+                {
+                    if (anyColumn["name"].ToString() != columnName_)
+                        query += anyColumn["name"].ToString() + ", ";
+                }
+                query = query.Remove(query.LastIndexOf(", "), 2);
+                query += " FROM temp_" + tableName_ + " ;";
+
+                getSQLite.ExecuteNonQuery_(query);
+
+                query = "DROP TABLE temp_" + tableName_ + ";";
+                getSQLite.ExecuteNonQuery_(query);
+
+                this.getTableColumns(tableName_);
             }
-            * */
         }
     }
 }

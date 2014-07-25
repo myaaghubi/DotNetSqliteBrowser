@@ -1,4 +1,4 @@
-﻿/*
+/*
  * DotNetSqliteBrowser 
  * Copyright (C) 2014 "Mohammad Yaghobi Beyrami" m.yaghobi.abc@gmail.com
 
@@ -179,6 +179,10 @@ namespace DotNetSqliteBrowser
         {
             Application.Current.Shutdown();
         }
+        private void refreshCommand(object sender, RoutedEventArgs e)
+        {
+            this.loadTables();
+        }
 
         private void queryexecute_btn_Click(object sender, RoutedEventArgs e)
         {
@@ -195,7 +199,7 @@ namespace DotNetSqliteBrowser
                 textBox.SelectAll();
         }
 
-        private void removeTable_btn_Click(object sender, RoutedEventArgs e)
+        private void removeTable_Click(object sender, RoutedEventArgs e)
         {
             if (tables_lb.SelectedIndex > -1)
             {
@@ -209,7 +213,7 @@ namespace DotNetSqliteBrowser
             }
         }
 
-        private void addTable_btn_Click(object sender, RoutedEventArgs e)
+        private void addTable_Click(object sender, RoutedEventArgs e)
         {
             addTable addTable_ = new addTable(getSQLite);
             addTable_.Show();
@@ -288,6 +292,11 @@ namespace DotNetSqliteBrowser
 
                 this.getTableColumns(tableName_);
             }
+        }
+
+        private void editColumn_btn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

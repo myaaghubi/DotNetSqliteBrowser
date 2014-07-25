@@ -1,4 +1,4 @@
-﻿<!-- 
+<!-- 
  * DotNetSqliteBrowser 
  * Copyright (C) 2014 "Mohammad Yaghobi Beyrami" m.yaghobi.abc@gmail.com
 
@@ -41,6 +41,15 @@
                     <Separator />
                     <MenuItem Header="_Exit" Click="exitCommand" />
                 </MenuItem>
+                <MenuItem Header="_Table" Padding="10">
+                    <MenuItem Header="_New Table" Click="addTable_Click" />
+                    <MenuItem Header="_Rename Table" />
+                    <MenuItem Header="_Drop Table" Click="removeTable_Click" />
+                    <Separator />
+                    <MenuItem Header="_Reindex Table" IsEnabled="False" />
+                    <Separator />
+                    <MenuItem Header="_Refresh" Click="refreshCommand" />
+                </MenuItem>
             </Menu>
 
         </DockPanel>
@@ -67,12 +76,12 @@
                     <Border BorderThickness="1" BorderBrush="#FFABADB3">
                         <Grid>
                             <Grid Margin="0" Height="26" VerticalAlignment="Top" Background="{StaticResource tablesHeaderBackground}" >
-                                <Button x:Name="removeTable_btn" Content="" Width="20" Margin="0,3,10,3" HorizontalAlignment="Right" BorderThickness="0" Click="removeTable_btn_Click">
+                                <Button x:Name="removeTable_btn" Content="" Width="20" Margin="0,3,10,3" HorizontalAlignment="Right" BorderThickness="0" Click="removeTable_Click">
                                     <Button.Background>
                                         <ImageBrush ImageSource="resources/icons/removetable.png" Stretch="Uniform"/>
                                     </Button.Background>
                                 </Button>
-                                <Button x:Name="addTable_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0" Click="addTable_btn_Click">
+                                <Button x:Name="addTable_btn" Content="" Width="20" Height="20" Margin="0,0,38,0" HorizontalAlignment="Right" BorderThickness="0" Click="addTable_Click">
                                     <Button.Background>
                                         <ImageBrush ImageSource="resources/icons/addtable.png" Stretch="Uniform"/>
                                     </Button.Background>
@@ -104,7 +113,7 @@
                                     </Button.Background>
                                 </Button>
                                 <TextBlock Width="100" Text="Columns" Padding="0,4" TextAlignment="Center" />
-                                <Button x:Name="editColumn_btn" Content="" Width="20" Margin="6,3,0,3" HorizontalAlignment="Left" BorderThickness="0">
+                                <Button x:Name="editColumn_btn" Content="" Width="18" Height="18" Margin="6,0,0,0" HorizontalAlignment="Left" BorderThickness="0" Click="editColumn_btn_Click">
                                     <Button.Background>
                                         <ImageBrush ImageSource="resources/icons/edit.png" Stretch="Uniform"/>
                                     </Button.Background>

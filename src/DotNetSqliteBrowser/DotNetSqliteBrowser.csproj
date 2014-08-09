@@ -82,6 +82,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="editColumn.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="editTable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -101,6 +105,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Data.cs" />
+    <Compile Include="editColumn.xaml.cs">
+      <DependentUpon>editColumn.xaml</DependentUpon>
+    </Compile>
     <Compile Include="editTable.xaml.cs">
       <DependentUpon>editTable.xaml</DependentUpon>
       <SubType>Code</SubType>

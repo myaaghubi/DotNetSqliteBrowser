@@ -296,7 +296,13 @@ namespace DotNetSqliteBrowser
 
         private void editColumn_btn_Click(object sender, RoutedEventArgs e)
         {
-
+            if (columns_lb.SelectedIndex != -1)
+            {
+                string colname = ((ListBoxItem)columns_lb.SelectedItem).Name;
+                string tblname = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                editColumn ecol = new editColumn(getSQLite, colname, tblname);
+                ecol.Show();
+            }
         }
     }
 }

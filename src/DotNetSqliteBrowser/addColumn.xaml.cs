@@ -58,5 +58,10 @@ namespace DotNetSqliteBrowser
                 this.Close();
             }
         }
+
+        private void cancel_btn_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

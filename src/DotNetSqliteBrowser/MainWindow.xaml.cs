@@ -41,9 +41,11 @@ namespace DotNetSqliteBrowser
     public partial class MainWindow : Window
     {
         private GetSQLite getSQLite;
+        private DataTable changes;
         public MainWindow()
         {
             InitializeComponent();
+            changes = null;
             getSQLite = new GetSQLite();
         }
 
@@ -302,6 +304,34 @@ namespace DotNetSqliteBrowser
                 string tblname = ((ListBoxItem)tables_lb.SelectedItem).Name;
                 editColumn ecol = new editColumn(getSQLite, colname, tblname);
                 ecol.Show();
+            }
+        }
+
+        private void updateData_btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void getChanges(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if(fulldatagrid_grd.SelectedIndex != -1)
+            {
+                if (changes == null)
+                {
+                    try
+                    {
+                        changes = new DataTable();
+                        changes = Data.GridToTable(fulldatagrid_grd).Clone();
+
+                        DataRowView drv = (DataRowView)fulldatagrid_grd.SelectedItem;
+                        changes=drv.Row.Table;
+                        fulldatagrid_grd.ItemsSource = changes.DefaultView;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString());
+                    }
+                }
             }
         }
     }

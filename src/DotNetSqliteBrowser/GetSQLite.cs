@@ -22,6 +22,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DotNetSqliteBrowser
@@ -88,6 +89,45 @@ namespace DotNetSqliteBrowser
                 {
                     command.ExecuteNonQuery();
                 }
+            }
+        }
+
+        public void Update(string tableName_, DataTable data)
+        {
+            if (tableName_ != string.Empty && data != null)
+            {
+                if (Open())
+                {
+                    string query = "UPDATE " + tableName_ + " SET ";
+                    foreach (DataColumn column in data.Columns)
+                    {
+                        if (column.ColumnName != "ROWID")
+                        {
+                            query += column.ColumnName + " = @" + column.ColumnName + ", ";
+                        }
+                    }
+                    query = query.Remove(query.LastIndexOf(", "), 2);
+                    query += " where ROWID=";
+
+                    SQLiteCommand command;
+                    string temp;
+                    foreach (DataRow row in data.Rows)
+                    {
+                        command = sqliteConnection.CreateCommand();
+                        command.CommandText = query + row["ROWID"].ToString();
+
+                        for (int i=0; i<row.ItemArray.Length; i++)
+                        {
+                            temp = data.Columns[i].ColumnName.ToString();
+                            //MessageBox.Show(temp);
+                            if (temp != "ROWID")
+                                command.Parameters.AddWithValue("@" + temp, row.ItemArray[i].ToString());
+                        }
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                    
             }
         }
 

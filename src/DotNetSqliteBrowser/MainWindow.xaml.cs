@@ -77,7 +77,7 @@ namespace DotNetSqliteBrowser
             }
             catch (Exception ex)
             {
-                
+                MessageBox.Show("Error: "+ex.ToString());
             }
         }
 
@@ -338,6 +338,36 @@ namespace DotNetSqliteBrowser
                     if (addFlag)
                         changedRows.Add(rowid);
                 }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error: "+ex.ToString());
+            }
+        }
+
+        private void updateTable_btn_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string tblName = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                string query = "PRAGMA table_info('" + tblName + "');";
+                
+                DataTable tableInfo = getSQLite.getValueByQuery(query);
+                DataTable data = new DataTable();
+
+                data.Columns.Add("ROWID", typeof(Int64));
+                foreach (DataRow tablesRow in tableInfo.Rows)
+                {
+                    data.Columns.Add(tablesRow[1].ToString());
+                }
+                foreach (string item in changedRows)
+                {
+                    DataRowView drv = (DataRowView)fulldatagrid_grd.Items.GetItemAt(int.Parse(item) - 1);
+                    data.Rows.Add(drv.Row.ItemArray);
+                }
+
+                changedRows = null;
+                getSQLite.Update(tblName, data);
             }
             catch(Exception ex)
             {

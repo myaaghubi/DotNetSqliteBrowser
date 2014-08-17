@@ -150,9 +150,9 @@
                     <Border BorderThickness="1" Grid.Row="2" BorderBrush="#FFABADB3">
                         <Grid>
                             <Grid Margin="0" Height="26" VerticalAlignment="Top" Background="{StaticResource tablesHeaderBackground}">
-                                <Button x:Name="updateTable_btn" Content="" Width="18" Height="18" Margin="6,0,0,0" HorizontalAlignment="Left" BorderThickness="0" Click="updateTable_btn_Click">
+                                <Button x:Name="updateTable_btn" Content="" Width="18" Height="18" Margin="6,0,0,0" HorizontalAlignment="Left" BorderThickness="0" Click="updateTable_btn_Click" ToolTip="update changes">
                                     <Button.Background>
-                                        <ImageBrush ImageSource="resources/icons/update.png" Stretch="Uniform"/>
+                                        <ImageBrush ImageSource="resources/icons/update.png" Stretch="Uniform" Opacity="0.4"/>
                                     </Button.Background>
                                 </Button>
                                 <TextBlock Text="Data" Padding="0,4" Width="100" TextAlignment="Center" />

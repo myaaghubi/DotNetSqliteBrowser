@@ -322,6 +322,7 @@ namespace DotNetSqliteBrowser
                     if (changedRows == null)
                     {
                         changedRows = new List<string>();
+                        updateTable_btn.Background.Opacity = 1;
                     }
 
                     DataRowView drv = (DataRowView)fulldatagrid_grd.SelectedItem;
@@ -349,25 +350,29 @@ namespace DotNetSqliteBrowser
         {
             try
             {
-                string tblName = ((ListBoxItem)tables_lb.SelectedItem).Name;
-                string query = "PRAGMA table_info('" + tblName + "');";
-                
-                DataTable tableInfo = getSQLite.getValueByQuery(query);
-                DataTable data = new DataTable();
-
-                data.Columns.Add("ROWID", typeof(Int64));
-                foreach (DataRow tablesRow in tableInfo.Rows)
+                if (changedRows != null)
                 {
-                    data.Columns.Add(tablesRow[1].ToString());
-                }
-                foreach (string item in changedRows)
-                {
-                    DataRowView drv = (DataRowView)fulldatagrid_grd.Items.GetItemAt(int.Parse(item) - 1);
-                    data.Rows.Add(drv.Row.ItemArray);
-                }
+                    string tblName = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                    string query = "PRAGMA table_info('" + tblName + "');";
 
-                changedRows = null;
-                getSQLite.Update(tblName, data);
+                    DataTable tableInfo = getSQLite.getValueByQuery(query);
+                    DataTable data = new DataTable();
+
+                    data.Columns.Add("ROWID", typeof(Int64));
+                    foreach (DataRow tablesRow in tableInfo.Rows)
+                    {
+                        data.Columns.Add(tablesRow[1].ToString());
+                    }
+                    foreach (string item in changedRows)
+                    {
+                        DataRowView drv = (DataRowView)fulldatagrid_grd.Items.GetItemAt(int.Parse(item) - 1);
+                        data.Rows.Add(drv.Row.ItemArray);
+                    }
+
+                    changedRows = null;
+                    updateTable_btn.Background.Opacity = 0.4;
+                    getSQLite.Update(tblName, data);
+                }
             }
             catch(Exception ex)
             {

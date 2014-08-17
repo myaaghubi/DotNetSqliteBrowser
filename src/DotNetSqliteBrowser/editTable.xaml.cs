@@ -39,6 +39,7 @@ namespace DotNetSqliteBrowser
     public partial class editTable : Window
     {
         private GetSQLite getSqlite;
+        private DataTable tableColumns;
         private string tableName;
         private int currentIndex;
         public editTable(GetSQLite getSqlite_, string tableName_)
@@ -55,9 +56,9 @@ namespace DotNetSqliteBrowser
         {
             tablename_txt.Text = tableName;
             string query = "PRAGMA table_info('" + tableName + "');";
-            
-            DataTable tableInfo = getSqlite.getValueByQuery(query);
-            columns_grd.ItemsSource = tableInfo.DefaultView;
+
+            tableColumns = getSqlite.getValueByQuery(query);
+            columns_grd.ItemsSource = tableColumns.DefaultView;
         }
 
         private void getCell(object sender, SelectionChangedEventArgs e)
@@ -174,7 +175,7 @@ namespace DotNetSqliteBrowser
                     query = "INSERT INTO " + newTableName + "(";
                     foreach (DataRow anyColumn in tableOfColumns.Rows)
                     {
-                        if (anyColumn.RowState != DataRowState.Deleted)
+                        if (anyColumn.RowState != DataRowState.Deleted && anyColumn["changes"].ToString() != "2")
                             query += anyColumn["name"].ToString() + ", ";
                     }
 
@@ -183,7 +184,7 @@ namespace DotNetSqliteBrowser
 
                     foreach (DataRow anyColumn in tableOfColumns.Rows)
                     {
-                        if (anyColumn.RowState != DataRowState.Deleted)
+                        if (anyColumn.RowState != DataRowState.Deleted && anyColumn["changes"].ToString() != "2")
                             if (anyColumn["changes"].ToString() == "1")
                                 query += anyColumn["oldname"].ToString() + ", ";
                             else

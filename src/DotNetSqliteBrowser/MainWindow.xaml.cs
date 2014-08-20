@@ -379,5 +379,16 @@ namespace DotNetSqliteBrowser
                 MessageBox.Show("Error: "+ex.ToString());
             }
         }
+
+        private void gettoexcute_btn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void addtable_btn_Click(object sender, RoutedEventArgs e)
+        {
+            tableObject to = new tableObject();
+            tablespanel_wpp.Children.Add(to);
+        }
     }
 }

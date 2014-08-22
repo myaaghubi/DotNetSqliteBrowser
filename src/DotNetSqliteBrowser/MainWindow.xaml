@@ -154,8 +154,12 @@
                                         <Button x:Name="addtable_btn" Content="+" Margin="28,0,0,0" HorizontalAlignment="Left" Click="addtable_btn_Click" Width="18" Height="18"/>
                                     </Grid>
                                     <Grid Background="#FFE5E5E5" Margin="0,25,0,0">
-                                        <WrapPanel x:Name="tablespanel_wpp" Margin="0,0,0,182" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"/>
-                                        <DataGrid BorderBrush="{x:Null}" Height="182" VerticalAlignment="Bottom" />
+                                        <ScrollViewer Margin="0,0,0,140" >
+                                            <WrapPanel x:Name="tablespanel_wpp" FlowDirection="RightToLeft"/>
+                                        </ScrollViewer>
+                                        <ScrollViewer Height="140" VerticalAlignment="Bottom">
+                                            <DataGrid BorderBrush="{x:Null}" />
+                                        </ScrollViewer>
                                     </Grid>
                                 </Grid>
                             </TabItem>

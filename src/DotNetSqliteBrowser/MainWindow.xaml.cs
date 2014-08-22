@@ -387,8 +387,15 @@ namespace DotNetSqliteBrowser
 
         private void addtable_btn_Click(object sender, RoutedEventArgs e)
         {
-            tableObject to = new tableObject();
-            tablespanel_wpp.Children.Add(to);
+            if (tables_lb.SelectedIndex != -1)
+            {
+                string tblName = ((ListBoxItem)tables_lb.SelectedItem).Name;
+                tableObject to = new tableObject(getSQLite, tblName);
+                tablespanel_wpp.Children.Add(to);
+            }
+            
         }
+
+
     }
 }

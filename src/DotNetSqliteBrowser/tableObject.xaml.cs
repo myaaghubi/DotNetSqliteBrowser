@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,36 @@ namespace DotNetSqliteBrowser
     /// </summary>
     public partial class tableObject : UserControl
     {
-        public tableObject()
-        {
-            InitializeComponent();
-        }
+        private string tblName;
+        private GetSQLite getSQLite;
 
+        public tableObject(GetSQLite getSQLite_,string tblName_)
+        {
+            // TODO: Complete member initialization
+            InitializeComponent();
+            this.getSQLite = getSQLite_;
+            this.tblName = tblName_;
+            this.load();
+        }
+        private void load()
+        {
+            string query = "PRAGMA table_info('" + tblName + "');";
+
+            DataTable tableInfo = getSQLite.getValueByQuery(query);
+            tableInfo.NewRow();
+            (tableInfo.Rows[tableInfo.Rows.Count - 1])["name"] = "*";
+            (tableInfo.Rows[tableInfo.Rows.Count - 1])["type"] = "";
+
+            columns_dgd.ItemsSource = tableInfo.DefaultView;
+        }
+        private void change(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid dgtc = sender as DataGrid;
+            DataTable dt = Data.GridToTable(dgtc);
+            MessageBox.Show((dt.Rows[0])["checked"].ToString());
+        }
         private void close_btn_Click(object sender, RoutedEventArgs e)
         {
-            
         }
     }
 }

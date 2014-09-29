@@ -396,6 +396,35 @@ namespace DotNetSqliteBrowser
             
         }
 
+        private void exportToXML_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string query = "SELECT name, sql from sqlite_master WHERE type='table';";
+                
+                DataTable table;
+                DataTable tables = getSQLite.getValueByQuery(query);
+                DataSet allTables = new DataSet();
+
+                ListBoxItem lbi;
+                foreach (DataRow tablesRow in tables.Rows)
+                {
+                    table = new DataTable();
+                    table = getSQLite.getValueByQuery("select * from " + tablesRow[0].ToString());
+                    table.TableName = tablesRow[0].ToString();
+                    allTables.Tables.Add(table);
+                }
+                if (allTables.Tables.Count>0)
+                {
+                    allTables.WriteXml(@"D:\dsfs.xml");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.ToString());
+            }
+        }
+
 
     }
 }

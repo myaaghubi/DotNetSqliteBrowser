@@ -36,7 +36,7 @@
                     <Separator />
                     <MenuItem Header="_Open..." Click="openCommand" />
                     <Separator />
-                    <MenuItem Header="_Save" />
+                    <MenuItem Header="_Save" IsEnabled="False" />
                     <MenuItem Header="_Save As..." />
                     <Separator />
                     <MenuItem Header="_Exit" Click="exitCommand" />
@@ -49,6 +49,9 @@
                     <MenuItem Header="_Reindex Table" IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="_Refresh" Click="refreshCommand" />
+                </MenuItem>
+                <MenuItem Header="_Import/Export" Padding="10">
+                    <MenuItem Header="_Export to XML file" Click="exportToXML_Click" />
                 </MenuItem>
             </Menu>
 

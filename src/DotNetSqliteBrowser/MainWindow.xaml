@@ -37,7 +37,7 @@
                     <MenuItem Header="_Open..." Click="openCommand" />
                     <Separator />
                     <MenuItem Header="_Save" IsEnabled="False" />
-                    <MenuItem Header="_Save As..." />
+                    <MenuItem Header="_Save As..." IsEnabled="False" />
                     <Separator />
                     <MenuItem Header="_Exit" Click="exitCommand" />
                 </MenuItem>

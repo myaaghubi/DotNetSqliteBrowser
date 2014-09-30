@@ -406,7 +406,7 @@ namespace DotNetSqliteBrowser
                 DataTable tables = getSQLite.getValueByQuery(query);
                 DataSet allTables = new DataSet();
 
-                ListBoxItem lbi;
+                if (tables != null)
                 foreach (DataRow tablesRow in tables.Rows)
                 {
                     table = new DataTable();
@@ -416,7 +416,15 @@ namespace DotNetSqliteBrowser
                 }
                 if (allTables.Tables.Count>0)
                 {
-                    allTables.WriteXml(@"D:\dsfs.xml");
+                    
+                    SaveFileDialog saveDialog = new SaveFileDialog();
+                    saveDialog.Filter = "XML (*.xml)|*.xml";
+                    
+                    if (saveDialog.ShowDialog().Value)
+                        if (saveDialog.FileName != null)
+                        {
+                            allTables.WriteXml(saveDialog.FileName);
+                        }
                 }
             }
             catch (Exception ex)

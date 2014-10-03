@@ -51,7 +51,10 @@
                     <MenuItem Header="_Refresh" Click="refreshCommand" />
                 </MenuItem>
                 <MenuItem Header="_Import/Export" Padding="10">
-                    <MenuItem Header="_Export to XML file" Click="exportToXML_Click" />
+                    <MenuItem Header="_Export to XML file">
+                        <MenuItem Header="_Export selected table" Click="exportTableToXML_Click" />
+                        <MenuItem Header="_Export opened database" Click="exportDBToXML_Click" />
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 

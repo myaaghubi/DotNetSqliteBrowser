@@ -396,30 +396,31 @@ namespace DotNetSqliteBrowser
             
         }
 
-        private void exportToXML_Click(object sender, RoutedEventArgs e)
+        private void exportDBToXML_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 string query = "SELECT name, sql from sqlite_master WHERE type='table';";
-                
+
                 DataTable table;
                 DataTable tables = getSQLite.getValueByQuery(query);
                 DataSet allTables = new DataSet();
+                allTables.DataSetName = "SQLiteDB";
 
                 if (tables != null)
-                foreach (DataRow tablesRow in tables.Rows)
+                    foreach (DataRow tablesRow in tables.Rows)
+                    {
+                        table = new DataTable();
+                        table = getSQLite.getValueByQuery("select * from " + tablesRow[0].ToString());
+                        table.TableName = tablesRow[0].ToString();
+                        allTables.Tables.Add(table);
+                    }
+                if (allTables.Tables.Count > 0)
                 {
-                    table = new DataTable();
-                    table = getSQLite.getValueByQuery("select * from " + tablesRow[0].ToString());
-                    table.TableName = tablesRow[0].ToString();
-                    allTables.Tables.Add(table);
-                }
-                if (allTables.Tables.Count>0)
-                {
-                    
+
                     SaveFileDialog saveDialog = new SaveFileDialog();
                     saveDialog.Filter = "XML (*.xml)|*.xml";
-                    
+
                     if (saveDialog.ShowDialog().Value)
                         if (saveDialog.FileName != null)
                         {
@@ -430,6 +431,30 @@ namespace DotNetSqliteBrowser
             catch (Exception ex)
             {
                 MessageBox.Show("Error: " + ex.ToString());
+            }
+        }
+        private void exportTableToXML_Click(object sender, RoutedEventArgs e)
+        {
+            if (tables_lb.SelectedIndex > -1)
+            {
+                ListBoxItem lbi = (ListBoxItem)tables_lb.SelectedItem;
+                if (lbi.Name != "NoTable")
+                {
+                    DataTable table = getSQLite.getValueByQuery("select * from " + lbi.Content);
+                    table.TableName = lbi.Content.ToString();
+                    DataSet tableTo = new DataSet();
+                    tableTo.DataSetName = "SQLiteDB";
+                    tableTo.Tables.Add(table);
+
+                    SaveFileDialog saveDialog = new SaveFileDialog();
+                    saveDialog.Filter = "XML (*.xml)|*.xml";
+
+                    if (saveDialog.ShowDialog().Value)
+                        if (saveDialog.FileName != null)
+                        {
+                            tableTo.WriteXml(saveDialog.FileName);
+                        }
+                }
             }
         }
 

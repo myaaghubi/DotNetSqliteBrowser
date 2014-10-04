@@ -34,6 +34,7 @@ namespace DotNetSqliteBrowser
         public GetSQLite(string _connection)
         {
             sqliteConnection = new SQLiteConnection("Data Source=" + _connection);
+            if (!isValidSqlite(sqliteConnection)) sqliteConnection = null;
         }
 
         public GetSQLite()
@@ -53,7 +54,6 @@ namespace DotNetSqliteBrowser
             {
                 if (sqliteConnection.State != System.Data.ConnectionState.Open)
                     sqliteConnection.Open();
-                    
                 return true;
             }
             return false;
@@ -63,6 +63,28 @@ namespace DotNetSqliteBrowser
         {
             if (sqliteConnection.State == System.Data.ConnectionState.Open)
                 sqliteConnection.Close();
+        }
+
+        private bool isValidSqlite(SQLiteConnection connection_)
+        {
+            try
+            {
+                connection_.Open();
+                using (SQLiteDataAdapter adapter = new SQLiteDataAdapter("PRAGMA integrity_check;", connection_))
+                {
+                    DataTable result = new DataTable();
+                    adapter.Fill(result);
+                    connection_.Close();
+                    
+                    if (result.Rows.Count == 1 && (result.Rows[0])[0].ToString().ToLower() == "ok")
+                        return true;
+                }
+                return false;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
 
         public DataTable getValueByQuery(string query)

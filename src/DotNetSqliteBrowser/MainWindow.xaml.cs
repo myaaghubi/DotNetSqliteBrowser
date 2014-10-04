@@ -56,24 +56,26 @@ namespace DotNetSqliteBrowser
                 string query = "SELECT name, sql from sqlite_master WHERE type='table';";
 
                 DataTable tables = getSQLite.getValueByQuery(query);
-                tables_lb.Items.Clear();
                 
+                tables_lb.Items.Clear();
                 ListBoxItem lbi;
-                foreach(DataRow tablesRow in tables.Rows)
-                {
-                    lbi = new ListBoxItem();
-                    lbi.Name = tablesRow[0].ToString();
-                    lbi.Content = tablesRow[0].ToString();
-                    lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
-                    tables_lb.Items.Add(lbi);
-                }
-                if (tables.Rows.Count == 0)
+
+                if (tables == null || tables.Rows.Count == 0)
                 {
                     lbi = new ListBoxItem();
                     lbi.Name = "NoTable";
                     lbi.Content = "no any table";
                     tables_lb.Items.Add(lbi);
                 }
+                else
+                    foreach(DataRow tablesRow in tables.Rows)
+                    {
+                        lbi = new ListBoxItem();
+                        lbi.Name = tablesRow[0].ToString();
+                        lbi.Content = tablesRow[0].ToString();
+                        lbi.MouseLeftButtonUp += tables_MouseLeftButtonUp;
+                        tables_lb.Items.Add(lbi);
+                    }
             }
             catch (Exception ex)
             {
@@ -458,6 +460,6 @@ namespace DotNetSqliteBrowser
             }
         }
 
-
+        
     }
 }
